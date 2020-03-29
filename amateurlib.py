@@ -1,6 +1,8 @@
 import requests
 import sys
 
+import tokenlib
+
 # 12: 452940, https://smash.gg/tournament/google-tournament-12/event/singles/brackets/759972/1226109/
 # 11: 437320, https://smash.gg/tournament/google-tournament-11/event/singles/brackets/733771/1181079/
 # 10: 420846, https://smash.gg/tournament/google-tournament-10/event/singles/brackets/704764/1142226/
@@ -66,13 +68,14 @@ def fetch_singles_event_id(tournament_slug, token):
 		})
 
 	json = response.json()
-	if not json:
-		raise Exception("Failed to fetch data: " + json)
+	print('TOURNAMENT RESPONSE: ' + str(json))
+	if not json or not json.get('data'):
+		raise Exception("Failed to fetch data: " + str(json))
 
 	events = json['data']['tournament']['events']
 	singles_events = [
 		e for e in events
-		if e['name'] == "Singles"]
+		if "Singles" in e['name']]
 	if not singles_events:
 		print("Could not find a 'Singles' event in the tournament.")
 		print("Make sure the name of your singles event is 'Singles'.")
@@ -97,8 +100,9 @@ def fetch_round_sets(round_number, event_id, token):
 		})
 	
 	json = response.json()
-	if not json:
-		raise Exception("Failed to fetch data: " + json)
+	print('EVENTS RESPONSE: ' + str(json))
+	if not json or not json.get('data'):
+		raise Exception("Failed to fetch data: " + str(json))
 
 	sets = json['data']['event']['sets']['nodes']
 	return sets
@@ -147,32 +151,11 @@ def get_seed(entrant):
 	"""Gets an entrant's seed."""
 	return entrant['seeds'][0]['seedNum']
 
-if __name__ == '__main__':
-	token = ""
-	with open("apikey.txt") as f:
-		if not f:
-			print("API key not setup. Put it in apikey.txt.")
-			sys.exit(1)
-
-		token = f.readline().strip()
-
-	if len(sys.argv) < 2:
-		print(f"Usage: {sys.argv[0]} <tournament>")
-		print(f"e.g. in the URL https://smash.gg/tournament/mytournament,")
-		print(f"     this would be {sys.argv[0]} mytournament")
-		sys.exit(1)
-
-	tournament_slug = sys.argv[1]
+def fetch_seed_sorted_amateurs(tournament_slug, token):
+	"""Gets the amateurs, sorted by seed, from a tournament."""
 	singles_event_id = fetch_singles_event_id(
 		tournament_slug, token)
 	amateur_sets = fetch_amateur_deciding_sets(
 		singles_event_id, token)
 	amateurs = [get_loser(s) for s in amateur_sets]
-	seed_sorted_amateurs = sorted(amateurs, key=get_seed)
-
-	print("Here's how I think your amateur bracket should look:")
-	for i, amateur in enumerate(seed_sorted_amateurs):
-		print(f"{i+1}. {amateur['name']}")
-
-	print("Unfortunately, due to limitations in smash.gg's API, ")
-	print("I can't create this bracket for you right now. :(")
+	return sorted(amateurs, key=get_seed)

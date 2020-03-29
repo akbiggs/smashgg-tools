@@ -1,3 +1,4 @@
 apikey.txt
 test/
 myenv/
+__pycache__/
