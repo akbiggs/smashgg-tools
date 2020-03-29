@@ -1,11 +1,11 @@
 # smash.gg tools
 
 These are some tools I created to interact with smash.gg tournaments.
-Eventually I'll try to create a website for these to make them easier to use.
+Website at: akbiggs.pythonanywhere.com
 
-## Setup
+## Running the website
 
-Before any of the tools can be run, you'll need to:
+To run the website locally, you'll need to:
 
 1. Go to [developer.smash.gg](http://developer.smash.gg) and sign up for dev access
    by filling out the form under Authentication (ugh). This should take a day to get
@@ -18,8 +18,18 @@ Before any of the tools can be run, you'll need to:
 5. Activate your virtual environment:
    - On Windows: `myenv\Scripts\activate.bat`
    - On Mac / Unix: `./myenv/Scripts/activate`
-6. Install the requests library into your virtual environment: `pip install requests`
-7. You're good to go.
+6. Install the following libraries:
+
+```
+pip install requests
+pip install flask
+```
+
+7. Set up the `FLASK_APP` environment variable:
+  - On Windows: `set FLASK_APP flask_app.py`
+  - On Mac / Unix: `export FLASK_APP=flask_app.py`
+8. Run the flask app: `flask run`
+9. You're good to go, follow flask's instructions to see the website.
 
 ## Amateur Bracket Generator
 
