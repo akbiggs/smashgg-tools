@@ -8,7 +8,8 @@ Eventually I'll try to create a website for these to make them easier to use.
 Before any of the tools can be run, you'll need to:
 
 1. Go to [developer.smash.gg](http://developer.smash.gg) and sign up for dev access
-   by filling out the form (ugh). This should take a day to get approved.
+   by filling out the form under Authentication (ugh). This should take a day to get
+   approved.
 2. Once you've received dev access, create a token. Copy that token into a file
    in this folder named `apikey.txt`. The only line in this file should be your
    API token.
@@ -40,7 +41,7 @@ To run it:
 Example session:
 
 ```
-(test) C:\Users\Alex\src\sggtool>python main.py google-tournament-12
+(test) C:\Users\Alex\src\sggtool>python create_amateur_bracket.py google-tournament-12
 Here's how I think your amateur bracket should look:
 
 1. TenSpeed
